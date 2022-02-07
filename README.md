@@ -7,13 +7,13 @@ This entity row only allows the lock command to be called on a lock and prevents
 
 Very simple and requires no extra configuration.  Add the type "custom:only-lock-lock-row" to your entity.
 
-##Example
+## Example
 ```yaml
 entity: lock.front_door
 type: custom:only-lock-lock-row
 ```
 
-### Inside a Entities Card Configuration
+### Inside an Entities Card Configuration
 ```yaml
 type: entities
 entities:
@@ -21,7 +21,7 @@ entities:
   type: custom:only-lock-lock-row
 ```
 
-
+![Demo](images/Demo.gif)
 
 # Roadmap
 In general, the intended purpose of this is complete, outside of maintenance/cleanup.  However, there are some optional features I want to add.
