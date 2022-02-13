@@ -17,8 +17,7 @@ class OnlyLockLockRow extends Polymer.Element {
                     state-obj="[[stateObj]]" 
             ></state-info>           
              <mwc-button
-              on-click="_callService"
-              data-service="lock"
+              on-click="_callLockService"
               >Lock</mwc-button
             >
             </div>
@@ -59,13 +58,12 @@ class OnlyLockLockRow extends Polymer.Element {
 
     }
 
-    _callService(ev) {
+    _callLockService(ev) {
         ev.stopPropagation();
-        const service = ev.target.dataset.service;
         const data = {
             entity_id: this._config.entity,
         };
-        this.hass.callService("lock", service, data);
+        this.hass.callService("lock", "lock", data);
     }
 }
 
