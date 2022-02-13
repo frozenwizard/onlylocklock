@@ -9,19 +9,12 @@ class OnlyLockLockRow extends Polymer.Element {
               margin-right: -0.57em;
             }
           </style>
-          <hui-generic-entity-row hass="[[hass]]" config="[[_config]]"         
-
-          <div class="horizontal justified layout">
-          <state-info
-                    hass="[[hass]]"
-                    state-obj="[[stateObj]]" 
-            ></state-info>           
-             <mwc-button
-              on-click="_callLockService"
-              >Lock</mwc-button
-            >
+          <hui-generic-entity-row hass="[[hass]]" config="[[_config]]"
+            <div class="horizontal justified layout">
+              <state-info hass="[[hass]]" state-obj="[[stateObj]]"></state-info>           
+              <mwc-button on-click="_callLockService">Lock</mwc-button>
             </div>
-            </hui-generic-entity-row>
+          </hui-generic-entity-row>
        
         `
     }
