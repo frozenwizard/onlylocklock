@@ -1,6 +1,6 @@
 {
   "name": "onlylocklock",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "home assistant plugin",
   "main": "only-lock-lock-row.js",
   "dependencies": {},
@@ -15,7 +15,7 @@
     "type": "git",
     "url": "git+https://github.com/frozenwizard/onlylocklock.git"
   },
-  "author": "",
+  "author": "frozenwizard",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/frozenwizard/onlylocklock/issues"
