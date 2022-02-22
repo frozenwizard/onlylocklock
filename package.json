@@ -1,0 +1,24 @@
+{
+  "name": "onlylocklock",
+  "version": "0.1.0",
+  "description": "home assistant plugin",
+  "main": "only-lock-lock-row.js",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frozenwizard/onlylocklock.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/frozenwizard/onlylocklock/issues"
+  },
+  "homepage": "https://github.com/frozenwizard/onlylocklock#readme"
+}
