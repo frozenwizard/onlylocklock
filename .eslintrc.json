@@ -10,5 +10,7 @@
         "ecmaVersion": "latest"
     },
     "rules": {
+        "max-len": ["error", { "code": 120 }],
+        "require-jsdoc": ["error",  {"require": {"ClassDeclaration": true}}]
     }
 }
