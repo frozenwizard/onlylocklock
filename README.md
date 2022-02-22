@@ -1,11 +1,14 @@
+![GitHub](https://img.shields.io/github/license/frozenwizard/onlylocklock)
+![GitHub all releases](https://img.shields.io/github/downloads/frozenwizard/onlylocklock/total)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/frozenwizard/onlylocklock)
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
 # onlylocklock
 
 This is a custom entity row for locks in Home Assistant.  The intent is to expose the locks so that they can only be locked and not be unlocked through the ui.  This is good for wall tablets or for users with restricted access.
 
 This entity row only allows the lock command to be called on a lock and prevents the more-info popup from being shown.  It looks like a normal lock row.
 # Usage
-
-Very simple and requires no extra configuration.  Add the type "custom:only-lock-lock-row" to your entity.
+Add the type "custom:only-lock-lock-row" to your entity.
 
 ## Example
 ```yaml
