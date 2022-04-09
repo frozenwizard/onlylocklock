@@ -58,7 +58,7 @@ class OnlyCloseCoverRow extends Polymer.Element {
     const data = {
       entity_id: this._config.entity,
     };
-    this.hass.callService('cover', 'close', data);
+    this.hass.callService('cover', 'close_cover', data);
   }
 }
 
