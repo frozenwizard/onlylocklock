@@ -1,4 +1,7 @@
 # Changelog
+## v0.3.1 (09-04-2022)
+### Bug Fixes
+Fixes close cover service call failing
 
 ## v0.3 (09-04-2022)
 Adds new only close cover functionality
