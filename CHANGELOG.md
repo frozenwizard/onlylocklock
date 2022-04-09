@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.3 (09-04-2022)
+Adds new only close cover functionality
+
 ## v0.2 (21-02-2022)
 This is a minor code improvement release focusing on the internals only, no new features have been added.
 ### Features/Improvements
