@@ -4,17 +4,23 @@
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
 # onlylocklock
 
-This is a custom entity row for locks in Home Assistant.  The intent is to expose the locks so that they can only be locked and not be unlocked through the ui.  This is good for wall tablets or for users with restricted access.
+This is a custom entity row for locks and covers in Home Assistant.  The intent is to expose the locks/covers so that they can only be locked/closed and not be unlocked/opened through the ui.  This is good for wall tablets or for users with restricted access.
 
-This entity row only allows the lock command to be called on a lock and prevents the more-info popup from being shown.  It looks like a normal lock row.
+This entity row only allows the lock command to be called on a lock and prevents the more-info popup from being shown.  It looks like a normal lock row. Similarly, the only close cover row only allows the close_cover command to be called on a cover.
 # Usage
-Add the type "custom:only-lock-lock-row" to your entity.
+Add the type "custom:only-lock-lock-row" to your lock or "custom:only-close-cover-row" to your cover. Configuration is the same for both types in that they only have entity to be configured.  Note that cover is intended an only tested on "Garage doors", it will work on other cover types.
 
 ## Example
 ```yaml
 entity: lock.front_door
 type: custom:only-lock-lock-row
 ```
+Or
+```yaml
+entity: cover.garage_door
+type: custom:only-close-cover-row
+```
+
 
 ### Inside an Entities Card Configuration
 ```yaml
