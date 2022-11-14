@@ -2,8 +2,8 @@
  *  Only Arm Alarm custom entity
  */
 class OnlyArmAlarmRow extends Polymer.Element {
-    static get template() {
-        return Polymer.html`
+  static get template() {
+    return Polymer.html`
           <style include="iron-flex iron-flex-alignment"></style>
           <style>
             mwc-button {
@@ -21,54 +21,54 @@ class OnlyArmAlarmRow extends Polymer.Element {
           </hui-generic-entity-row>
        
         `;
-    }
+  }
 
 
-    static get properties() {
-        return {
-            hass: Object,
-            stateObj: {
-                type: Object,
-                observer: '_stateObjChanged',
-            },
-        };
-    }
+  static get properties() {
+    return {
+      hass: Object,
+      stateObj: {
+        type: Object,
+        observer: '_stateObjChanged',
+      },
+    };
+  }
 
-    setConfig(config) {
-        this._config = {
-            tap_action: {
-                action: 'none',
-            },
-            ...config,
-        };
-    }
+  setConfig(config) {
+    this._config = {
+      tap_action: {
+        action: 'none',
+      },
+      ...config,
+    };
+  }
 
 
-    displayName() {
-        return this._config.name || this.stateObj.attributes.friendly_name;
-    }
+  displayName() {
+    return this._config.name || this.stateObj.attributes.friendly_name;
+  }
 
-    _stateObjChanged(newVal) {
-        this.setProperties({
-            _stateObj: stateObj,
-        });
-    }
+  _stateObjChanged(newVal) {
+    this.setProperties({
+      _stateObj: stateObj,
+    });
+  }
 
-    _callArmHome(ev) {
-        ev.stopPropagation();
-        const data = {
-            entity_id: this._config.entity,
-        };
-        this.hass.callService('alarm_control_panel', 'alarm_arm_home', data);
-    }
+  _callArmHome(ev) {
+    ev.stopPropagation();
+    const data = {
+      entity_id: this._config.entity,
+    };
+    this.hass.callService('alarm_control_panel', 'alarm_arm_home', data);
+  }
 
-    _callArmAway(ev) {
-        ev.stopPropagation();
-        const data = {
-            entity_id: this._config.entity,
-        };
-        this.hass.callService('alarm_control_panel', 'alarm_arm_away', data);
-    }
+  _callArmAway(ev) {
+    ev.stopPropagation();
+    const data = {
+      entity_id: this._config.entity,
+    };
+    this.hass.callService('alarm_control_panel', 'alarm_arm_away', data);
+  }
 }
 
 customElements.define('only-arm-alarm-row', OnlyArmAlarmRow);
