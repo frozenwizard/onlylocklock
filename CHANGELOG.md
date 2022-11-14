@@ -1,4 +1,8 @@
 # Changelog
+
+## v0.4 (14-11-2022)
+Adds new only arm alarm functionality
+
 ## v0.3.1 (09-04-2022)
 ### Bug Fixes
 Fixes close cover service call failing
