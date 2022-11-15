@@ -1,7 +1,7 @@
 /**
  *  Only Lock Lock custom entity
  */
-class OnlyLockLockRow extends Polymer.Element {
+export class OnlyLockLockRow extends Polymer.Element {
   static get template() {
     return Polymer.html`
           <style include="iron-flex iron-flex-alignment"></style>
@@ -61,5 +61,3 @@ class OnlyLockLockRow extends Polymer.Element {
     this.hass.callService('lock', 'lock', data);
   }
 }
-
-customElements.define('only-lock-lock-row', OnlyLockLockRow);

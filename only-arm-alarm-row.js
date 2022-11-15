@@ -1,7 +1,7 @@
 /**
  *  Only Arm Alarm custom entity
  */
-class OnlyArmAlarmRow extends Polymer.Element {
+export class OnlyArmAlarmRow extends Polymer.Element {
   static get template() {
     return Polymer.html`
           <style include="iron-flex iron-flex-alignment"></style>
@@ -71,4 +71,3 @@ class OnlyArmAlarmRow extends Polymer.Element {
   }
 }
 
-customElements.define('only-arm-alarm-row', OnlyArmAlarmRow);

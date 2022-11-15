@@ -1,7 +1,7 @@
 /**
  *  Only Close Cover custom entity
  */
-class OnlyCloseCoverRow extends Polymer.Element {
+export class OnlyCloseCoverRow extends Polymer.Element {
   static get template() {
     return Polymer.html`
           <style include="iron-flex iron-flex-alignment"></style>
@@ -15,7 +15,7 @@ class OnlyCloseCoverRow extends Polymer.Element {
           <hui-generic-entity-row hass="[[hass]]" config="[[_config]]"
             <div class="horizontal justified layout">
               <state-info hass="[[hass]]" state-obj="[[stateObj]]"></state-info>        
-              <mwc-button on-click="_callLockService">Close</mwc-button>
+              <mwc-button on-click="_callCloseService">Close</mwc-button>
             </div>
           </hui-generic-entity-row>
        
@@ -53,7 +53,7 @@ class OnlyCloseCoverRow extends Polymer.Element {
     });
   }
 
-  _callLockService(ev) {
+  _callCloseService(ev) {
     ev.stopPropagation();
     const data = {
       entity_id: this._config.entity,
@@ -61,5 +61,3 @@ class OnlyCloseCoverRow extends Polymer.Element {
     this.hass.callService('cover', 'close_cover', data);
   }
 }
-
-customElements.define('only-close-cover-row', OnlyCloseCoverRow);
