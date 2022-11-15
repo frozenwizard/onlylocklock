@@ -1,5 +1,9 @@
 # Changelog
 
+
+## v0.5 (15-11-2022)
+Simplifies importing the row files
+
 ## v0.4 (14-11-2022)
 Adds new only arm alarm functionality
 

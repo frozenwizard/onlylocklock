@@ -1,8 +1,8 @@
 {
   "name": "onlylocklock",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "home assistant plugin",
-  "main": "only-lock-lock-row.js",
+  "main": "content.js",
   "devDependencies": {
     "eslint": "^8.27.0",
     "eslint-config-google": "^0.14.0"
