@@ -28,13 +28,12 @@ export class OnlyLockLockRow extends LitElement {
               margin-right: -0.57em;
             }
           </style>
-          <hui-generic-entity-row hass="[[hass]]" config="[[_config]]"
+          <hui-generic-entity-row .hass="${this.hass}" .config="${this._config}">
             <div class="horizontal justified layout">
               <state-info hass="[[hass]]" state-obj="[[stateObj]]"></state-info>        
-              <mwc-button on-click="_callLockService">Lock</mwc-button>
+              <button @click=${this.callLockService}>Lock</button>
             </div>
           </hui-generic-entity-row>
-       
         `;
   }
 
@@ -69,7 +68,7 @@ export class OnlyLockLockRow extends LitElement {
     });
   }
 
-  _callLockService(ev) {
+  callLockService() {
     const data = {
       entity_id: this._config.entity,
     };

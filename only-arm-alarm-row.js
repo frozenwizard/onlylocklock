@@ -32,10 +32,9 @@ export class OnlyArmAlarmRow extends LitElement {
             <div class="horizontal justified layout">
               <state-info hass="[[hass]]" state-obj="[[stateObj]]"></state-info>        
               <button @click=${this.callArmAway}>Arm Away</button>
-              <button  @click=${this.callArmHome()}>Arm Home</button>
+              <button  @click=${this.callArmHome}>Arm Home</button>
             </div>
           </hui-generic-entity-row>
-       
         `;
   }
 

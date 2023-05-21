@@ -28,13 +28,12 @@ export class OnlyCloseCoverRow extends Polymer.Element {
               margin-right: -0.57em;
             }
           </style>
-          <hui-generic-entity-row hass="[[hass]]" config="[[_config]]"
+          <hui-generic-entity-row .hass="${this.hass}" .config="${this._config}">
             <div class="horizontal justified layout">
-              <state-info hass="[[hass]]" state-obj="[[stateObj]]"></state-info>        
-              <mwc-button on-click="_callCloseService">Close</mwc-button>
+              <state-info hass="[[hass]]" state-obj="[[stateObj]]"></state-info>
+              <button @click=${this.callCloseService}>Close</button>
             </div>
           </hui-generic-entity-row>
-       
         `;
   }
 
@@ -69,7 +68,7 @@ export class OnlyCloseCoverRow extends Polymer.Element {
     });
   }
 
-  _callCloseService(ev) {
+  callCloseService(ev) {
     const data = {
       entity_id: this._config.entity,
     };
