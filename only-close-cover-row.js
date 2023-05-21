@@ -14,7 +14,7 @@ const html = LitElement.prototype.html;
 /**
  *  Only Close Cover custom entity
  */
-export class OnlyCloseCoverRow extends Polymer.Element {
+export class OnlyCloseCoverRow extends LitElement {
   constructor() {
     super();
   }
