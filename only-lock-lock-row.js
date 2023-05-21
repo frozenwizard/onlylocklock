@@ -1,9 +1,25 @@
+window.customCards = window.customCards || [];
+window.customCards.push({
+  type: 'only-lock-lock-row',
+  name: 'Only Lock Lock row',
+  description: 'A plugin to only lock a Lock.',
+  preview: false,
+});
+
+const LitElement = customElements.get('ha-panel-lovelace') ?
+    Object.getPrototypeOf(customElements.get('ha-panel-lovelace')) :
+    Object.getPrototypeOf(customElements.get('hc-lovelace'));
+const html = LitElement.prototype.html;
+
 /**
  *  Only Lock Lock custom entity
  */
-export class OnlyLockLockRow extends Polymer.Element {
-  static get template() {
-    return Polymer.html`
+export class OnlyLockLockRow extends LitElement {
+  constructor() {
+    super();
+  }
+  render() {
+    return html`
           <style include="iron-flex iron-flex-alignment"></style>
           <style>
             mwc-button {
@@ -54,7 +70,6 @@ export class OnlyLockLockRow extends Polymer.Element {
   }
 
   _callLockService(ev) {
-    ev.stopPropagation();
     const data = {
       entity_id: this._config.entity,
     };

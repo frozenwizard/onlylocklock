@@ -1,9 +1,25 @@
+window.customCards = window.customCards || [];
+window.customCards.push({
+  type: 'only-arm-alarm-row',
+  name: 'Only Arm Alarm row',
+  description: 'A plugin to only arm an Alarm.',
+  preview: false,
+});
+
+const LitElement = customElements.get('ha-panel-lovelace') ?
+    Object.getPrototypeOf(customElements.get('ha-panel-lovelace')) :
+    Object.getPrototypeOf(customElements.get('hc-lovelace'));
+const html = LitElement.prototype.html;
+
 /**
  *  Only Arm Alarm custom entity
  */
-export class OnlyArmAlarmRow extends Polymer.Element {
-  static get template() {
-    return Polymer.html`
+export class OnlyArmAlarmRow extends LitElement {
+  constructor() {
+    super();
+  }
+  render() {
+    return html`
           <style include="iron-flex iron-flex-alignment"></style>
           <style>
             mwc-button {
@@ -12,11 +28,11 @@ export class OnlyArmAlarmRow extends Polymer.Element {
               margin-right: -0.57em;
             }
           </style>
-          <hui-generic-entity-row hass="[[hass]]" config="[[_config]]"
+          <hui-generic-entity-row .hass="${this.hass}" .config="${this._config}">
             <div class="horizontal justified layout">
               <state-info hass="[[hass]]" state-obj="[[stateObj]]"></state-info>        
-              <mwc-button on-click="_callArmAway">Arm Away</mwc-button>
-              <mwc-button on-click="_callArmHome">Arm Home</mwc-button>
+              <button @click=${this.callArmAway}>Arm Away</button>
+              <button  @click=${this.callArmHome()}>Arm Home</button>
             </div>
           </hui-generic-entity-row>
        
@@ -54,20 +70,17 @@ export class OnlyArmAlarmRow extends Polymer.Element {
     });
   }
 
-  _callArmHome(ev) {
-    ev.stopPropagation();
+  callArmHome(ev) {
     const data = {
       entity_id: this._config.entity,
     };
     this.hass.callService('alarm_control_panel', 'alarm_arm_home', data);
   }
 
-  _callArmAway(ev) {
-    ev.stopPropagation();
+  callArmAway(ev) {
     const data = {
       entity_id: this._config.entity,
     };
     this.hass.callService('alarm_control_panel', 'alarm_arm_away', data);
   }
 }
-
