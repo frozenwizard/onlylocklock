@@ -1,9 +1,25 @@
+window.customCards = window.customCards || [];
+window.customCards.push({
+  type: 'only-close-cover-row',
+  name: 'Only Close Cover row',
+  description: 'A plugin to only close a Cover.',
+  preview: false,
+});
+
+const LitElement = customElements.get('ha-panel-lovelace') ?
+    Object.getPrototypeOf(customElements.get('ha-panel-lovelace')) :
+    Object.getPrototypeOf(customElements.get('hc-lovelace'));
+const html = LitElement.prototype.html;
+
 /**
  *  Only Close Cover custom entity
  */
 export class OnlyCloseCoverRow extends Polymer.Element {
-  static get template() {
-    return Polymer.html`
+  constructor() {
+    super();
+  }
+  render() {
+    return html`
           <style include="iron-flex iron-flex-alignment"></style>
           <style>
             mwc-button {
@@ -54,7 +70,6 @@ export class OnlyCloseCoverRow extends Polymer.Element {
   }
 
   _callCloseService(ev) {
-    ev.stopPropagation();
     const data = {
       entity_id: this._config.entity,
     };
