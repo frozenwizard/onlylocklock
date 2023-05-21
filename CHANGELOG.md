@@ -1,5 +1,7 @@
 # Changelog
 
+## v0.6 (20-05-2023)
+Removing Polymer
 
 ## v0.5 (15-11-2022)
 Simplifies importing the row files
