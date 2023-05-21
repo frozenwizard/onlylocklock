@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.6.1 (21-05-2023)
+Fixing minor issue with close cover
+
 ## v0.6 (20-05-2023)
 Removing Polymer
 
