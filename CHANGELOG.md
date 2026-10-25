@@ -1,10 +1,20 @@
 # Changelog
 
+## Unreleased
+### Fixes
+* Lint now catches undefined variables (`eslint:recommended`), which would have caught the v0.6 breakage
+* Removed leftover Polymer code from all three rows (no behavior change)
+### Maintenance
+* CI runs on Node 24 with current GitHub Actions
+* README: corrected the alarm service names, documented the `name` option, and added a note that the rows only hide controls
+
 ## v0.6.1 (21-05-2023)
-Fixing minor issue with close cover
+Fixes v0.6: the close cover row still extended `Polymer.Element` after Polymer was removed. Depending on your Home Assistant version, this broke all three rows or left the cover row empty.
 
 ## v0.6 (20-05-2023)
 Removing Polymer
+
+**Broken release:** depending on your Home Assistant version, all three rows failed to load or the cover row was empty. Upgrade to v0.6.1.
 
 ## v0.5 (15-11-2022)
 Simplifies importing the row files

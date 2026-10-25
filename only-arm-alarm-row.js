@@ -15,9 +15,6 @@ const html = LitElement.prototype.html;
  *  Only Arm Alarm custom entity
  */
 export class OnlyArmAlarmRow extends LitElement {
-  constructor() {
-    super();
-  }
   render() {
     return html`
           <style include="iron-flex iron-flex-alignment"></style>
@@ -30,7 +27,6 @@ export class OnlyArmAlarmRow extends LitElement {
           </style>
           <hui-generic-entity-row .hass="${this.hass}" .config="${this._config}">
             <div class="horizontal justified layout">
-              <state-info hass="[[hass]]" state-obj="[[stateObj]]"></state-info>        
               <button @click=${this.callArmAway}>Arm Away</button>
               <button  @click=${this.callArmHome}>Arm Home</button>
             </div>
@@ -42,10 +38,6 @@ export class OnlyArmAlarmRow extends LitElement {
   static get properties() {
     return {
       hass: Object,
-      stateObj: {
-        type: Object,
-        observer: '_stateObjChanged',
-      },
     };
   }
 
@@ -58,25 +50,14 @@ export class OnlyArmAlarmRow extends LitElement {
     };
   }
 
-
-  displayName() {
-    return this._config.name || this.stateObj.attributes.friendly_name;
-  }
-
-  _stateObjChanged(newVal) {
-    this.setProperties({
-      _stateObj: stateObj,
-    });
-  }
-
-  callArmHome(ev) {
+  callArmHome() {
     const data = {
       entity_id: this._config.entity,
     };
     this.hass.callService('alarm_control_panel', 'alarm_arm_home', data);
   }
 
-  callArmAway(ev) {
+  callArmAway() {
     const data = {
       entity_id: this._config.entity,
     };

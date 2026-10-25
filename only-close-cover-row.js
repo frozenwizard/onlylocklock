@@ -15,9 +15,6 @@ const html = LitElement.prototype.html;
  *  Only Close Cover custom entity
  */
 export class OnlyCloseCoverRow extends LitElement {
-  constructor() {
-    super();
-  }
   render() {
     return html`
           <style include="iron-flex iron-flex-alignment"></style>
@@ -30,7 +27,6 @@ export class OnlyCloseCoverRow extends LitElement {
           </style>
           <hui-generic-entity-row .hass="${this.hass}" .config="${this._config}">
             <div class="horizontal justified layout">
-              <state-info hass="[[hass]]" state-obj="[[stateObj]]"></state-info>
               <button @click=${this.callCloseService}>Close</button>
             </div>
           </hui-generic-entity-row>
@@ -41,10 +37,6 @@ export class OnlyCloseCoverRow extends LitElement {
   static get properties() {
     return {
       hass: Object,
-      stateObj: {
-        type: Object,
-        observer: '_stateObjChanged',
-      },
     };
   }
 
@@ -57,18 +49,7 @@ export class OnlyCloseCoverRow extends LitElement {
     };
   }
 
-
-  displayName() {
-    return this._config.name || this.stateObj.attributes.friendly_name;
-  }
-
-  _stateObjChanged(newVal) {
-    this.setProperties({
-      _stateObj: stateObj,
-    });
-  }
-
-  callCloseService(ev) {
+  callCloseService() {
     const data = {
       entity_id: this._config.entity,
     };

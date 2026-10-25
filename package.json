@@ -1,13 +1,18 @@
 {
   "name": "onlylocklock",
   "version": "0.6.1",
-  "description": "home assistant plugin",
+  "private": true,
+  "description": "Home Assistant entity rows that can only lock a lock, close a cover or arm an alarm",
   "main": "content.js",
+  "engines": {
+    "node": ">=24"
+  },
   "devDependencies": {
     "eslint": "^8.27.0",
     "eslint-config-google": "^0.14.0"
   },
   "scripts": {
+    "lint": "eslint --ignore-path .gitignore .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

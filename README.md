@@ -4,11 +4,13 @@
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
 # onlylocklock
 
-This project provides custom entities row for locks, covers and alarm systems in Home Assistant.  The intent is to expose the locks/covers/alarm so that they can only be locked/closed/armed and not be unlocked/opened/disarmed through the ui.  This is good for wall tablets or for users with restricted access.
+This project provides custom entity rows for locks, covers and alarm systems in Home Assistant.  The intent is to expose the locks/covers/alarm so that they can only be locked/closed/armed and not be unlocked/opened/disarmed through the ui.  This is good for wall tablets or for users with restricted access.
 
-This entity row only allows the lock command to be called on a lock and prevents the more-info popup from being shown.  It looks like a normal lock row. Similarly, the only close cover row only allows the close_cover command to be called on a cover.  The only arm alarm  only allows the arm_alarm_home or arm_alarm_away to be called on an alarm_control_panel.
+> **Note:** these rows only hide controls in the dashboard. They don't restrict what a user can do: anyone who can log in to Home Assistant can still unlock, open or disarm through other dashboards or the API.
+
+The only lock lock row only allows the `lock` command to be called on a lock and prevents the more-info popup from being shown.  It looks like a normal lock row. Similarly, the only close cover row only allows the `close_cover` command to be called on a cover.  The only arm alarm row only allows `alarm_arm_home` or `alarm_arm_away` to be called on an alarm_control_panel.
 # Usage
-Add the type "custom:only-lock-lock-row" to your lock or "custom:only-close-cover-row" to your cover or "custom:only-arm-alarm-row" to your security system. Configuration is the same for both types in that they only have entity to be configured.  Note that cover is intended an only tested on "Garage doors", it will work on other cover types.
+Add the type "custom:only-lock-lock-row" to your lock or "custom:only-close-cover-row" to your cover or "custom:only-arm-alarm-row" to your security system. All three rows take the same configuration: `entity` (required) and an optional `name`.  Note that the cover row is intended for, and only tested on, garage doors, but it should work with other cover types.
 
 ## Example
 ```yaml
