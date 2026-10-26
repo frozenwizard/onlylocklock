@@ -1,0 +1,24 @@
+title: onlylocklock
+views:
+  - title: Rows
+    path: rows
+    cards:
+      - type: entities
+        title: Rows under test
+        entities:
+          - entity: lock.test_lock
+            type: custom:only-lock-lock-row
+          - entity: cover.test_cover
+            type: custom:only-close-cover-row
+          - entity: alarm_control_panel.test_alarm
+            type: custom:only-arm-alarm-row
+          - entity: lock.code_lock
+            type: custom:only-lock-lock-row
+          - entity: alarm_control_panel.code_alarm
+            type: custom:only-arm-alarm-row
+      # A standard row, so the more-info test can show that its check does see the popup.
+      - type: entities
+        title: Control
+        entities:
+          - entity: lock.test_lock
+            name: Control lock

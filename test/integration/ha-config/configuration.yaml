@@ -1,0 +1,83 @@
+# Minimal Home Assistant config for the integration tests. Everything here is
+# deterministic: the lock and cover are template entities backed by input
+# booleans, and the alarms are manual panels that arm instantly.
+
+homeassistant:
+  name: onlylocklock test
+  time_zone: UTC
+  country: US
+
+frontend:
+# The frontend calls recorder/info on every page.
+recorder:
+
+lovelace:
+  resource_mode: yaml
+  resources:
+    - url: /local/onlylocklock/content.js
+      type: module
+  dashboards:
+    onlylocklock-test:
+      mode: yaml
+      title: onlylocklock
+      filename: dashboards/onlylocklock.yaml
+
+input_boolean:
+  test_lock_locked:
+  code_lock_locked:
+  test_cover_closed:
+
+template:
+  - lock:
+      - name: Test lock
+        unique_id: test_lock
+        state: "{{ 'locked' if is_state('input_boolean.test_lock_locked', 'on') else 'unlocked' }}"
+        lock:
+          - action: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.test_lock_locked
+        unlock:
+          - action: input_boolean.turn_off
+            target:
+              entity_id: input_boolean.test_lock_locked
+      # HA rejects lock and unlock calls without a 4-digit code.
+      - name: Code lock
+        unique_id: code_lock
+        code_format: "{{ '^\\d{4}$' }}"
+        state: "{{ 'locked' if is_state('input_boolean.code_lock_locked', 'on') else 'unlocked' }}"
+        lock:
+          - action: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.code_lock_locked
+        unlock:
+          - action: input_boolean.turn_off
+            target:
+              entity_id: input_boolean.code_lock_locked
+  - cover:
+      - name: Test cover
+        unique_id: test_cover
+        device_class: garage
+        state: "{{ 'closed' if is_state('input_boolean.test_cover_closed', 'on') else 'open' }}"
+        close_cover:
+          - action: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.test_cover_closed
+        open_cover:
+          - action: input_boolean.turn_off
+            target:
+              entity_id: input_boolean.test_cover_closed
+
+alarm_control_panel:
+  - platform: manual
+    name: Test alarm
+    unique_id: test_alarm
+    code_arm_required: false
+    arming_time: 0
+    delay_time: 0
+  # Arming and disarming both need the code.
+  - platform: manual
+    name: Code alarm
+    unique_id: code_alarm
+    code: "1234"
+    arming_time: 0
+    delay_time: 0

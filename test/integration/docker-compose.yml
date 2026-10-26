@@ -1,0 +1,17 @@
+name: onlylocklock-test
+
+services:
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:${HA_VERSION:-2026.10.4}
+    ports:
+      - "127.0.0.1:${HA_PORT:-18123}:8123"
+    # Copy the seed config into the container instead of bind-mounting it, so every
+    # run starts unonboarded and HA's .storage never ends up in the repo.
+    entrypoint: ["sh", "-c", "cp -R /seed/. /config/ && exec /init"]
+    volumes:
+      - ./ha-config:/seed:ro
+      # Served as /local/onlylocklock/. Until there is a build step, these are the source files.
+      - ../../content.js:/config/www/onlylocklock/content.js:ro
+      - ../../only-arm-alarm-row.js:/config/www/onlylocklock/only-arm-alarm-row.js:ro
+      - ../../only-close-cover-row.js:/config/www/onlylocklock/only-close-cover-row.js:ro
+      - ../../only-lock-lock-row.js:/config/www/onlylocklock/only-lock-lock-row.js:ro
