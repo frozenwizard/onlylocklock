@@ -9,12 +9,15 @@
     "node": ">=24"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.64.1",
-    "eslint": "^8.27.0",
-    "eslint-config-google": "^0.14.0"
+    "eslint": "^10.13.0",
+    "eslint-plugin-lit": "^2.3.1",
+    "eslint-plugin-wc": "^3.1.0",
+    "globals": "^17.13.0"
   },
   "scripts": {
-    "lint": "eslint --ignore-path .gitignore .",
+    "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:int": "playwright test"
   },
