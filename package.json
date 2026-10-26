@@ -12,6 +12,7 @@
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.64.1",
     "@vitest/browser-playwright": "^5.0.5",
+    "acorn": "^8.19.0",
     "esbuild": "^0.28.2",
     "eslint": "^10.13.0",
     "eslint-plugin-lit": "^2.3.1",
@@ -24,7 +25,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:int": "playwright test",
-    "build": "esbuild src/index.js --bundle --format=esm --target=es2022 --minify --sourcemap --outfile=dist/content.js"
+    "build": "esbuild src/index.js --bundle --format=esm --target=chrome61,edge79,firefox94,ios12,safari12 --supported:destructuring=true --minify --sourcemap --outfile=dist/content.js && acorn --ecma2018 --module --silent dist/content.js"
   },
   "repository": {
     "type": "git",
