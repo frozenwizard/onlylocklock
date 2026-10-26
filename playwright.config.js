@@ -1,5 +1,5 @@
 import {defineConfig, devices} from '@playwright/test';
-import {HA_URL, STORAGE_STATE} from './test/integration/ha.js';
+import {HA_URL} from './test/integration/ha.js';
 
 export default defineConfig({
   testDir: './test/integration',
@@ -15,7 +15,6 @@ export default defineConfig({
   use: {
     ...devices['Desktop Chrome'],
     baseURL: HA_URL,
-    storageState: STORAGE_STATE,
     trace: 'retain-on-failure',
   },
 });

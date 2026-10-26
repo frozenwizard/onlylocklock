@@ -11,15 +11,20 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.64.1",
+    "@vitest/browser-playwright": "^5.0.5",
+    "esbuild": "^0.28.2",
     "eslint": "^10.13.0",
     "eslint-plugin-lit": "^2.3.1",
     "eslint-plugin-wc": "^3.1.0",
-    "globals": "^17.13.0"
+    "globals": "^17.13.0",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
   },
   "scripts": {
     "lint": "eslint .",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "test:int": "playwright test"
+    "test": "vitest run",
+    "test:int": "playwright test",
+    "build": "esbuild src/index.js --bundle --format=esm --target=es2022 --minify --sourcemap --outfile=dist/content.js"
   },
   "repository": {
     "type": "git",
@@ -30,5 +35,8 @@
   "bugs": {
     "url": "https://github.com/frozenwizard/onlylocklock/issues"
   },
-  "homepage": "https://github.com/frozenwizard/onlylocklock#readme"
+  "homepage": "https://github.com/frozenwizard/onlylocklock#readme",
+  "dependencies": {
+    "lit": "^3.3.3"
+  }
 }

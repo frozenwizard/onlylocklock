@@ -1,14 +1,30 @@
 # Changelog
 
 ## Unreleased
+### Changes
+* The alarm row only offers arming to a more secure state. Arm home is disabled once the alarm is armed away, so the row can't be used for a partial disarm, and neither button is offered in night, vacation or custom bypass mode
+* Buttons are disabled when they don't apply: the lock is already locked, the cover is already closed, or the entity is unavailable
+* Button labels come from Home Assistant's translations and follow the user's language. In English they now read "Close cover", "Arm away" and "Arm home". The new `labels` option overrides them
+* The entity's state shows under its name
+* The config can no longer turn `tap_action`, `hold_action` or `double_tap_action` back on, so the more-info popup never opens
+* A missing entity, an entity of the wrong type or an unknown label is now a configuration error
+* The rows no longer appear in the card picker, where they didn't work as cards
 ### Fixes
 * Lint now catches undefined variables (`eslint:recommended`), which would have caught the v0.6 breakage
 * Removed leftover Polymer code from all three rows (no behavior change)
+* A failed call, such as locking a lock that needs a code, no longer causes an uncaught error. Home Assistant still shows its error message
+* Buttons are disabled until a call finishes, so repeated taps send only one call
+* Loading the file twice no longer throws an error
+* The rows re-render only when their own entity changes, not on every Home Assistant update
+* The rows bundle their own copy of Lit instead of borrowing it from Home Assistant's dashboard
+* The buttons use Home Assistant theme colors, and screen readers announce the entity name with each button
 ### Maintenance
 * CI runs on Node 24 with current GitHub Actions
 * Integration tests: Playwright drives the rows in a real Home Assistant running in Docker, on every pull request
 * ESLint 10 with a flat config and the Lit and web component rules, replacing ESLint 8 and the unmaintained Google style config
-* README: corrected the alarm service names, documented the `name` option, and added a note that the rows only hide controls
+* Component tests run in Chromium with Vitest, on every pull request
+* The source is in `src/` and is bundled with esbuild
+* README: corrected the alarm service names, documented the options, and added a note that the rows only hide controls
 
 ## v0.6.1 (21-05-2023)
 Fixes v0.6: the close cover row still extended `Polymer.Element` after Polymer was removed. Depending on your Home Assistant version, this broke all three rows or left the cover row empty.

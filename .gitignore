@@ -3,4 +3,5 @@ node_modules/
 .DS_Store
 test-results/
 playwright-report/
-test/integration/.auth/
+dist/
+.vitest/

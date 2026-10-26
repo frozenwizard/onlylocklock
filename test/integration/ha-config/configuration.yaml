@@ -6,6 +6,16 @@ homeassistant:
   name: onlylocklock test
   time_zone: UTC
   country: US
+  auth_providers:
+    # Logs the browser in as the only user, with no login page. Trusting every
+    # address is only safe because the port listens on 127.0.0.1.
+    - type: trusted_networks
+      trusted_networks:
+        - 0.0.0.0/0
+        - ::/0
+      allow_bypass_login: true
+    # Onboarding creates the test user through this provider.
+    - type: homeassistant
 
 frontend:
 # The frontend calls recorder/info on every page.
@@ -53,6 +63,12 @@ template:
           - action: input_boolean.turn_off
             target:
               entity_id: input_boolean.code_lock_locked
+      - name: Unavailable lock
+        unique_id: unavailable_lock
+        availability: "{{ false }}"
+        state: "{{ 'unlocked' }}"
+        lock: []
+        unlock: []
   - cover:
       - name: Test cover
         unique_id: test_cover
