@@ -7,6 +7,7 @@
 ### Maintenance
 * CI runs on Node 24 with current GitHub Actions
 * Integration tests: Playwright drives the rows in a real Home Assistant running in Docker, on every pull request
+* ESLint 10 with a flat config and the Lit and web component rules, replacing ESLint 8 and the unmaintained Google style config
 * README: corrected the alarm service names, documented the `name` option, and added a note that the rows only hide controls
 
 ## v0.6.1 (21-05-2023)
