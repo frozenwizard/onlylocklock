@@ -1,0 +1,45 @@
+name: Integration tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  integration:
+    # Runs against the HA version pinned in test/integration/docker-compose.yml.
+    name: Integration
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v7
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install Node.js dependencies
+        run: npm ci
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run integration tests
+        run: npm run test:int
+      - name: Upload report, traces and HA log
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: integration
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14

@@ -14,5 +14,16 @@
     "rules": {
         "max-len": ["error", { "code": 120 }],
         "require-jsdoc": ["error",  {"require": {"ClassDeclaration": true}}]
-    }
+    },
+    "overrides": [
+        {
+            "files": ["playwright.config.js", "test/**/*.js"],
+            "env": {
+                "node": true
+            },
+            "rules": {
+                "require-jsdoc": "off"
+            }
+        }
+    ]
 }
