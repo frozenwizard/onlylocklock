@@ -1,7 +1,8 @@
 # Changelog
 
-## Unreleased
+## v1.0.0 (27-10-2026)
 ### Changes
+* Needs Home Assistant 2026.1 or newer. HACS won't offer this release to older versions
 * The alarm row only offers arming to a more secure state. Arm home is disabled once the alarm is armed away, so the row can't be used for a partial disarm, and neither button is offered in night, vacation or custom bypass mode
 * Buttons are disabled when they don't apply: the lock is already locked, the cover is already closed, or the entity is unavailable
 * Button labels come from Home Assistant's translations and follow the user's language. In English they now read "Close cover", "Arm away" and "Arm home". The new `labels` option overrides them

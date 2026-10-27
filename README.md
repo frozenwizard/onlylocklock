@@ -53,9 +53,8 @@ entities:
 
 ![Demo](images/Demo.gif)
 
-# Roadmap
-In general, the intended purpose of this is complete, outside of maintenance/cleanup.  However, there are some optional features I want to add.
-- Add battery level icon next to lock
-  - Requires setting a battery sensor entity per lock.
-- Allow specific user to unlock and view the more info popup.
-- Support theming?
+
+# Status
+This project is feature-complete and in maintenance mode. Each week, its dependencies and the Home Assistant version 
+its tests run against are updated automatically, as long as the integration tests still pass, so a Home Assistant 
+release that breaks the rows gets noticed. Bug reports are welcome, but no new features are planned.
