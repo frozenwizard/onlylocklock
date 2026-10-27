@@ -70,6 +70,42 @@ test('the alarm row arms home, then away, and never offers a partial disarm', as
   await expect(away).toBeDisabled();
 });
 
+// Only disarmed and armed home have a more secure state to move to.
+test('the alarm row offers nothing in night, vacation, custom bypass or triggered', async ({dashboard, api}) => {
+  const buttons = row(dashboard, 'only-arm-alarm-row', 'Test alarm').getByRole('button');
+  for (const [service, state] of [
+    ['alarm_arm_night', 'armed_night'],
+    ['alarm_arm_vacation', 'armed_vacation'],
+    ['alarm_arm_custom_bypass', 'armed_custom_bypass'],
+    ['alarm_trigger', 'triggered'],
+  ]) {
+    await api.setState(ENTITIES.alarm, service, state);
+    await expect(buttons.first()).toBeDisabled();
+    await expect(buttons.last()).toBeDisabled();
+  }
+  await api.setState(ENTITIES.alarm, 'alarm_disarm', 'disarmed');
+});
+
+test('a button stays disabled while its call runs', async ({dashboard, api}) => {
+  await api.setState(ENTITIES.slowLock, 'unlock', 'unlocked');
+  const lock = row(dashboard, 'only-lock-lock-row', 'Slow lock').getByRole('button', {name: 'Lock'});
+  await lock.click();
+  // The lock takes 2 seconds, so it's still unlocked while the button is disabled.
+  await expect(lock).toBeDisabled();
+  expect(await api.state(ENTITIES.slowLock)).toBe('unlocked');
+  await expect.poll(() => api.state(ENTITIES.slowLock)).toBe('locked');
+});
+
+test('labels in the config replace HA\'s', async ({dashboard}) => {
+  await expect(row(dashboard, 'only-arm-alarm-row', 'Alarm with labels').getByRole('button'))
+      .toHaveText(['Away', 'Home']);
+});
+
+// As when it's added both through HACS and as a manual resource.
+test('loading the file a second time does not throw', async ({dashboard}) => {
+  await dashboard.evaluate(() => import('/local/onlylocklock/content.js?again'));
+});
+
 test('an unavailable entity disables the button', async ({dashboard}) => {
   const lock = row(dashboard, 'only-lock-lock-row', 'Unavailable lock');
   await expect(lock.getByText('Unavailable', {exact: true})).toBeVisible();

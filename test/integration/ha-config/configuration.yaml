@@ -35,6 +35,7 @@ lovelace:
 input_boolean:
   test_lock_locked:
   code_lock_locked:
+  slow_lock_locked:
   test_cover_closed:
 
 template:
@@ -63,6 +64,19 @@ template:
           - action: input_boolean.turn_off
             target:
               entity_id: input_boolean.code_lock_locked
+      # Takes 2 seconds to lock, so the test can see the row while the call runs.
+      - name: Slow lock
+        unique_id: slow_lock
+        state: "{{ 'locked' if is_state('input_boolean.slow_lock_locked', 'on') else 'unlocked' }}"
+        lock:
+          - delay: 2
+          - action: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.slow_lock_locked
+        unlock:
+          - action: input_boolean.turn_off
+            target:
+              entity_id: input_boolean.slow_lock_locked
       - name: Unavailable lock
         unique_id: unavailable_lock
         availability: "{{ false }}"

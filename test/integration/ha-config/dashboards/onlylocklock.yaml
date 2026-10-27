@@ -18,6 +18,14 @@ views:
             type: custom:only-arm-alarm-row
           - entity: lock.unavailable_lock
             type: custom:only-lock-lock-row
+          - entity: lock.slow_lock
+            type: custom:only-lock-lock-row
+          - entity: alarm_control_panel.test_alarm
+            type: custom:only-arm-alarm-row
+            name: Alarm with labels
+            labels:
+              arm_away: Away
+              arm_home: Home
           # The rows ignore these actions, so this one must never open more-info either.
           - entity: alarm_control_panel.test_alarm
             type: custom:only-arm-alarm-row

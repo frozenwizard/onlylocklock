@@ -18,6 +18,7 @@ export const ENTITIES = {
   alarm: 'alarm_control_panel.test_alarm',
   codeAlarm: 'alarm_control_panel.code_alarm',
   unavailableLock: 'lock.unavailable_lock',
+  slowLock: 'lock.slow_lock',
 };
 export const ALARM_CODE = '1234';
 
