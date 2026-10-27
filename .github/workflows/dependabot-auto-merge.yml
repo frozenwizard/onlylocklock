@@ -1,0 +1,30 @@
+name: Dependabot auto-merge
+
+# Turns on auto-merge for every Dependabot PR, major updates included. GitHub
+# squash-merges it once the required checks, Run linters and Integration, pass.
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    name: Auto-merge
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    steps:
+      - name: Turn on auto-merge
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # GITHUB_TOKEN can't merge a change to a workflow file, which every
+          # GitHub Actions update is, so those are left to merge by hand.
+          if gh pr diff --name-only "$PR_URL" | grep -q '^\.github/workflows/'; then
+            echo "::notice::This PR changes a workflow file, which GITHUB_TOKEN can't merge. Merge it by hand."
+            exit 0
+          fi
+          gh pr merge --auto --squash "$PR_URL"

@@ -2,11 +2,16 @@ name: onlylocklock-test
 
 services:
   homeassistant:
-    # When you bump this, compare the `--target` of the build script in package.json
-    # with the [legacy] floors in the HA frontend's .browserslistrc, at the frontend
-    # version this release ships. The rows support the same browsers as HA itself.
-    # Chrome stays at 61 or above, the first version that loads module scripts.
-    image: ghcr.io/home-assistant/home-assistant:${HA_VERSION:-2026.10.4}
+    # Dependabot bumps this. On each bump, compare the `--target` of the build script
+    # in package.json with the [legacy] floors in the HA frontend's .browserslistrc,
+    # at the frontend version this release ships. The rows support the same browsers
+    # as HA itself. Chrome stays at 61 or above, the first version that loads module
+    # scripts.
+    # To test another version locally, set HA_IMAGE, for example
+    # `HA_IMAGE=ghcr.io/home-assistant/home-assistant:beta npm run test:int`. The
+    # variable wraps the whole image because that's the only place Dependabot reads
+    # a default from.
+    image: ${HA_IMAGE:-ghcr.io/home-assistant/home-assistant:2026.10.4}
     ports:
       - "127.0.0.1:${HA_PORT:-18123}:8123"
     # Copy the seed config into the container instead of bind-mounting it, so every

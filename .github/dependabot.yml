@@ -1,0 +1,26 @@
+# Opens update PRs once a week, on Mondays. Lint and the integration tests run on each.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    # One PR for all the minor and patch updates. Each major update gets its own.
+    groups:
+      npm:
+        patterns: ["*"]
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns: ["*"]
+
+  # The Home Assistant image the integration tests run against. Betas are skipped.
+  - package-ecosystem: docker-compose
+    directory: /test/integration
+    schedule:
+      interval: weekly

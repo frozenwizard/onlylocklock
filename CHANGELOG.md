@@ -21,6 +21,7 @@
 * The buttons use Home Assistant theme colors, and screen readers announce the entity name with each button
 ### Maintenance
 * CI runs on Node 24 with current GitHub Actions
+* Dependabot opens update PRs once a week for npm packages, GitHub Actions and the Home Assistant version the integration tests run against. They merge themselves once lint and the integration tests pass
 * Integration tests: Playwright drives the rows in a real Home Assistant running in Docker, on every pull request
 * ESLint 10 with a flat config and the Lit and web component rules, replacing ESLint 8 and the unmaintained Google style config
 * The source is in `src/` and is bundled with esbuild for the same browsers as Home Assistant, back to iOS 12 and Chrome 61, so old wall tablets keep working
