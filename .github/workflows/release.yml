@@ -1,0 +1,89 @@
+name: Release
+
+# To release, rename "## Unreleased" in CHANGELOG.md to "## vX.Y.Z (DD-MM-YYYY)",
+# merge that, then push a vX.Y.Z tag on main. HACS installs the content.js this
+# attaches to the release.
+#
+# A tag with a suffix, like v0.7.0-rc.1, makes a prerelease, which HACS only offers
+# to users who turned on beta versions. Its notes come from the v0.7.0 section.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Lint, build and test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v7
+      # First, so a missing CHANGELOG section fails before the tests run.
+      - name: Get release notes from CHANGELOG.md
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          version="${TAG%%-*}"
+          awk -v version="$version" '/^## / { if (found) exit; found = ($2 == version); next } found' CHANGELOG.md > notes.md
+          if ! grep -q '[^[:space:]]' notes.md; then
+            echo "::error::CHANGELOG.md has no \"## $version\" section, or it's empty."
+            exit 1
+          fi
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install Node.js dependencies
+        run: npm ci
+      - name: Run linters
+        run: npm run lint
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      # Builds dist/ first, so the bundle that's released is the one that was tested.
+      - name: Run integration tests
+        run: npm run test:int
+      - name: Upload the bundle and notes
+        uses: actions/upload-artifact@v7
+        with:
+          name: release
+          path: |
+            dist/content.js
+            dist/content.js.map
+            notes.md
+          if-no-files-found: error
+      - name: Upload report, traces and HA log
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: integration
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+
+  # Separate from the tests, so npm packages never run with a token that can write.
+  release:
+    name: Create the GitHub release
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download the bundle and notes
+        uses: actions/download-artifact@v8
+        with:
+          name: release
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          prerelease=()
+          if [[ "$TAG" == *-* ]]; then prerelease=(--prerelease); fi
+          gh release create "$TAG" dist/content.js dist/content.js.map \
+            --verify-tag --title "$TAG" --notes-file notes.md "${prerelease[@]}"
