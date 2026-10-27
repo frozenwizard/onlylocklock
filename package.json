@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "description": "Home Assistant entity rows that can only lock a lock, close a cover or arm an alarm",
-  "main": "content.js",
+  "main": "dist/content.js",
   "engines": {
     "node": ">=24"
   },

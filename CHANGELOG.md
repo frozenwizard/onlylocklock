@@ -25,6 +25,7 @@
 * Integration tests: Playwright drives the rows in a real Home Assistant running in Docker, on every pull request
 * ESLint 10 with a flat config and the Lit and web component rules, replacing ESLint 8 and the unmaintained Google style config
 * The source is in `src/` and is bundled with esbuild for the same browsers as Home Assistant, back to iOS 12 and Chrome 61, so old wall tablets keep working
+* Releases are built and tested in CI, which attaches the bundled `content.js` that HACS installs. The old unbundled files in the repo root are gone, and the resource URL stays `/hacsfiles/onlylocklock/content.js`
 * README: corrected the alarm service names, documented the options, and added a note that the rows only hide controls
 
 ## v0.6.1 (21-05-2023)
