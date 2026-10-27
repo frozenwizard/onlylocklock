@@ -68,6 +68,10 @@ test('the alarm row arms home, then away, and never offers a partial disarm', as
   // Home from away would turn off the indoor sensors.
   await expect(home).toBeDisabled();
   await expect(away).toBeDisabled();
+  // A disabled button can still be clicked, but the click does nothing.
+  await home.click({force: true});
+  await dashboard.waitForTimeout(1000);
+  expect(await api.state(ENTITIES.alarm)).toBe('armed_away');
 });
 
 // Only disarmed and armed home have a more secure state to move to.
@@ -86,14 +90,43 @@ test('the alarm row offers nothing in night, vacation, custom bypass or triggere
   await api.setState(ENTITIES.alarm, 'alarm_disarm', 'disarmed');
 });
 
-test('a button stays disabled while its call runs', async ({dashboard, api}) => {
+test('a button stays disabled while its call runs, and keeps focus', async ({dashboard, api}) => {
   await api.setState(ENTITIES.slowLock, 'unlock', 'unlocked');
   const lock = row(dashboard, 'only-lock-lock-row', 'Slow lock').getByRole('button', {name: 'Lock'});
-  await lock.click();
+  // From the keyboard, where losing focus would send the user back to the top of the page.
+  await lock.press('Enter');
   // The lock takes 2 seconds, so it's still unlocked while the button is disabled.
   await expect(lock).toBeDisabled();
+  await expect(lock).toBeFocused();
   expect(await api.state(ENTITIES.slowLock)).toBe('unlocked');
   await expect.poll(() => api.state(ENTITIES.slowLock)).toBe('locked');
+  // Now it's disabled because the lock is locked.
+  await expect(lock).toBeDisabled();
+  await expect(lock).toBeFocused();
+});
+
+// As when assistive tech or automation tooling clicks twice. Both clicks arrive
+// before the button is next rendered.
+test('two clicks in one task send one call', async ({dashboard, api}) => {
+  await api.setState(ENTITIES.lock, 'unlock', 'unlocked');
+  // Count the calls as HA receives them.
+  await dashboard.evaluate(async (entityId) => {
+    window.lockCalls = 0;
+    await document.querySelector('home-assistant').hass.connection.subscribeEvents((event) => {
+      const {domain, service, service_data: data} = event.data;
+      if (domain === 'lock' && service === 'lock' && data?.entity_id === entityId) window.lockCalls++;
+    }, 'call_service');
+  }, ENTITIES.lock);
+
+  await row(dashboard, 'only-lock-lock-row', 'Test lock').getByRole('button', {name: 'Lock'})
+      .evaluate((button) => {
+        button.click();
+        button.click();
+      });
+  await expect.poll(() => api.state(ENTITIES.lock)).toBe('locked');
+  // Give a second call time to arrive.
+  await dashboard.waitForTimeout(1000);
+  expect(await dashboard.evaluate(() => window.lockCalls)).toBe(1);
 });
 
 test('labels in the config replace HA\'s', async ({dashboard}) => {

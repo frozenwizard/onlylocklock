@@ -86,11 +86,13 @@ export class OnlyServiceRow extends LitElement {
       <div class="buttons">
         ${this.constructor.actions.map((action) => {
           const label = this._label(action);
+          // aria-disabled rather than disabled, which would drop the focus of a
+          // keyboard or screen-reader user who has just pressed the button.
           return html`
             <button
               type="button"
               aria-label="${label}: ${name}"
-              ?disabled=${this._pending || stateObj.state === 'unavailable' || !action.enabledWhen(stateObj.state)}
+              aria-disabled=${this._enabled(action, stateObj.state) ? 'false' : 'true'}
               @click=${(ev) => this._call(ev, action)}
             >${label}</button>
           `;
@@ -103,9 +105,17 @@ export class OnlyServiceRow extends LitElement {
     return this._config.labels?.[action.id] || this.hass.localize?.(action.labelKey) || action.fallback;
   }
 
+  _enabled(action, state) {
+    return !this._pending && state !== 'unavailable' && action.enabledWhen(state);
+  }
+
   async _call(ev, action) {
     // Keep the click away from the row's own tap handler.
     ev.stopPropagation();
+    // An aria-disabled button still gets clicks, and so does a button that was
+    // just clicked, until Lit next renders it. Without this, two clicks in one
+    // task would both send a call.
+    if (!this._enabled(action, this.hass.states[this._config.entity]?.state)) return;
     this._pending = true;
     try {
       await this.hass.callService(this.constructor.domain, action.service, {entity_id: this._config.entity});
@@ -138,13 +148,13 @@ export class OnlyServiceRow extends LitElement {
       font-weight: var(--ha-font-weight-medium, 500);
       cursor: pointer;
     }
-    button:hover:not(:disabled) {
+    button:hover:not([aria-disabled='true']) {
       background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
     }
     button:focus-visible {
       outline: 2px solid var(--primary-color);
     }
-    button:disabled {
+    button[aria-disabled='true'] {
       color: var(--disabled-text-color);
       cursor: default;
     }

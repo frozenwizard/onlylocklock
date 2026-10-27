@@ -13,7 +13,8 @@
 * Lint now catches undefined variables (`eslint:recommended`), which would have caught the v0.6 breakage
 * Removed leftover Polymer code from all three rows (no behavior change)
 * A failed call, such as locking a lock that needs a code, no longer causes an uncaught error. Home Assistant still shows its error message
-* Buttons are disabled until a call finishes, so repeated taps send only one call
+* Buttons are disabled until a call finishes, so repeated taps send only one call, even two in the same instant
+* A button keeps keyboard and screen-reader focus after it's pressed, instead of sending the user back to the top of the page
 * Loading the file twice no longer throws an error
 * The rows re-render only when their own entity changes, not on every Home Assistant update
 * The rows bundle their own copy of Lit instead of borrowing it from Home Assistant's dashboard
