@@ -9,7 +9,6 @@ export const HA_URL = `http://127.0.0.1:${HA_PORT}`;
 // The frontend's client id is its own origin with a trailing slash.
 export const CLIENT_ID = `${HA_URL}/`;
 export const COMPOSE_FILE = fileURLToPath(new URL('./docker-compose.yml', import.meta.url));
-export const STORAGE_STATE = fileURLToPath(new URL('./.auth/state.json', import.meta.url));
 export const DASHBOARD = '/onlylocklock-test/rows';
 
 export const ENTITIES = {
@@ -18,6 +17,8 @@ export const ENTITIES = {
   cover: 'cover.test_cover',
   alarm: 'alarm_control_panel.test_alarm',
   codeAlarm: 'alarm_control_panel.code_alarm',
+  unavailableLock: 'lock.unavailable_lock',
+  slowLock: 'lock.slow_lock',
 };
 export const ALARM_CODE = '1234';
 

@@ -1,14 +1,15 @@
-// Starts a fresh Home Assistant in Docker, onboards it through the REST API and
-// saves a logged-in browser state for the tests to reuse.
+// Builds the rows, starts a fresh Home Assistant in Docker, onboards it through the
+// REST API and creates a token for the tests' REST calls. The browser needs no
+// token: HA logs it in through the trusted_networks provider.
 import {execFileSync} from 'node:child_process';
-import {mkdirSync, writeFileSync} from 'node:fs';
-import {dirname} from 'node:path';
-import {CLIENT_ID, COMPOSE_FILE, ENTITIES, HA_URL, STORAGE_STATE} from './ha.js';
+import {CLIENT_ID, COMPOSE_FILE, ENTITIES, HA_URL} from './ha.js';
 import {dumpLogs} from './global-teardown.js';
 
 const USER = {name: 'Test', username: 'test', password: 'onlylocklock-test', language: 'en'};
 
 export default async function globalSetup() {
+  // Builds here rather than in the npm script, so `npx playwright test` never tests a stale bundle.
+  execFileSync('npm', ['run', 'build'], {stdio: 'inherit'});
   // --force-recreate throws away the previous container, and with it HA's .storage.
   execFileSync('docker', ['compose', '-f', COMPOSE_FILE, 'up', '-d', '--force-recreate'], {stdio: 'inherit'});
   try {
@@ -24,8 +25,7 @@ async function onboard() {
   await waitFor('HA to start', async () => (await fetch(`${HA_URL}/api/onboarding`)).ok, 180_000);
 
   const {auth_code: code} = await post('/api/onboarding/users', {...USER, client_id: CLIENT_ID});
-  const tokens = await fetchTokens(code);
-  const auth = tokens.access_token;
+  const auth = (await fetchTokens(code)).access_token;
   await post('/api/onboarding/core_config', {}, auth);
   await post('/api/onboarding/analytics', {}, auth);
   await post('/api/onboarding/integration', {client_id: CLIENT_ID, redirect_uri: `${HA_URL}/?auth_callback=1`}, auth);
@@ -34,21 +34,35 @@ async function onboard() {
     await waitFor(`${entityId} to exist`, async () => (await get(`/api/states/${entityId}`, auth)).ok, 60_000);
   }
 
-  // Workers start after global setup, so they inherit this.
-  process.env.HA_TOKEN = auth;
+  // The access token lasts 30 minutes, which `playwright test --ui` or a long
+  // --repeat-each run can outlast. Workers start after global setup, so they inherit this.
+  process.env.HA_TOKEN = await createLongLivedToken(auth);
+}
 
-  // The frontend reads its tokens from localStorage.hassTokens, so the tests start logged in.
-  const hassTokens = {
-    ...tokens,
-    hassUrl: HA_URL,
-    clientId: CLIENT_ID,
-    expires: Date.now() + tokens.expires_in * 1000,
-  };
-  mkdirSync(dirname(STORAGE_STATE), {recursive: true});
-  writeFileSync(STORAGE_STATE, JSON.stringify({
-    cookies: [],
-    origins: [{origin: HA_URL, localStorage: [{name: 'hassTokens', value: JSON.stringify(hassTokens)}]}],
-  }));
+// HA only creates long-lived tokens through its websocket API.
+async function createLongLivedToken(accessToken) {
+  const socket = new WebSocket(`${HA_URL.replace(/^http/, 'ws')}/api/websocket`);
+  try {
+    return await new Promise((resolve, reject) => {
+      socket.addEventListener('error', () => reject(new Error('Websocket connection to HA failed')));
+      socket.addEventListener('message', ({data}) => {
+        const message = JSON.parse(data);
+        if (message.type === 'auth_required') {
+          socket.send(JSON.stringify({type: 'auth', access_token: accessToken}));
+        } else if (message.type === 'auth_ok') {
+          socket.send(JSON.stringify({
+            id: 1, type: 'auth/long_lived_access_token', client_name: 'onlylocklock tests', lifespan: 1,
+          }));
+        } else if (message.type === 'result' && message.success) {
+          resolve(message.result);
+        } else {
+          reject(new Error(`Creating a long-lived token: ${data}`));
+        }
+      });
+    });
+  } finally {
+    socket.close();
+  }
 }
 
 async function fetchTokens(code) {
