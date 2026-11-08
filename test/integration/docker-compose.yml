@@ -11,7 +11,7 @@ services:
     # `HA_IMAGE=ghcr.io/home-assistant/home-assistant:beta npm run test:int`. The
     # variable wraps the whole image because that's the only place Dependabot reads
     # a default from.
-    image: ${HA_IMAGE:-ghcr.io/home-assistant/home-assistant:2026.10.4}
+    image: ${HA_IMAGE:-ghcr.io/home-assistant/home-assistant:2026.11.0}
     ports:
       - "127.0.0.1:${HA_PORT:-18123}:8123"
     # Copy the seed config into the container instead of bind-mounting it, so every
